@@ -1,11 +1,12 @@
 import Head from 'next/head'
 import React from 'react'
 import { Navbar } from '../ui/navbar';
+import { SideMenu } from '../ui/SideMenu';
 
 interface Props {
     title: string;
     pageDescription: string;
-    imageFullUrl: string;
+    imageFullUrl?: string;
     children: React.ReactNode;
 }
 
@@ -30,6 +31,7 @@ export const ShopLayout = ({ children, title, pageDescription, imageFullUrl }: P
             </nav>
 
             {/*TODO: SideBar */}
+            <SideMenu />
 
             <main
                 style={{
