@@ -2,6 +2,8 @@ import React from 'react'
 import { ShopLayout } from '../../components/layouts/ShopLayout';
 import { initialData } from '@/database/products';
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
+import { ProductSlideshow } from '../../components/products/ProductSlideshow';
+import ItemCounter from '@/components/ui/ItemCounter/ItemCounter';
 
 const product = initialData.products[0];
 
@@ -13,6 +15,7 @@ const Slug = () => {
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={7}>
                     {/* Slideshow */}
+                    <ProductSlideshow images={product.images} />
                 </Grid>
                 <Grid item xs={12} sm={5}>
                     {/* Product Details */}
@@ -31,6 +34,7 @@ const Slug = () => {
                                 Cantidad
                             </Typography>
                             {/* Subcounter */}
+                            <ItemCounter />
                         </Box>
 
                         {/* Agregar al carrito */}
