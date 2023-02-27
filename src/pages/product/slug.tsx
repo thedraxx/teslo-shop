@@ -4,6 +4,7 @@ import { initialData } from '@/database/products';
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 import { ProductSlideshow } from '../../components/products/ProductSlideshow';
 import ItemCounter from '@/components/ui/ItemCounter/ItemCounter';
+import SizeSelector from '@/components/products/SizeSelector';
 
 const product = initialData.products[0];
 
@@ -35,6 +36,10 @@ const Slug = () => {
                             </Typography>
                             {/* Subcounter */}
                             <ItemCounter />
+                            <SizeSelector
+                                selectedSize={product.sizes[0]}
+                                sizes={product.sizes}
+                            />
                         </Box>
 
                         {/* Agregar al carrito */}
