@@ -4,8 +4,20 @@ import { Typography } from '@mui/material'
 import { initialData } from '../database/products';
 import { ProductList } from '@/components/products/ProductList';
 
+import useSWR from 'swr'
+const fetcher = (...args: [key: string]) => fetch(...args).then((res) => res.json())
 
-const index = () => {
+
+const HomePage = () => {
+
+  const { data, error } = useSWR('/api/products', fetcher)
+
+
+
+  if (error) return <div>Failed to load</div>
+  if (!data) return <div>Loading...</div>
+
+
   return (
     <ShopLayout
       title="Shop"
@@ -17,11 +29,11 @@ const index = () => {
       <Typography variant='h2' sx={{ mb: 1 }}>Todos los productos</Typography>
 
       <ProductList
-        products={initialData.products as any}
+        products={data.products}
       />
 
     </ShopLayout>
   )
 }
 
-export default index
+export default HomePage

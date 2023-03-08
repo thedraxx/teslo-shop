@@ -4,7 +4,7 @@ import mongoose, { Schema, model, Model } from "mongoose";
 const productSchema = new Schema(
   {
     description: { type: String, required: true },
-    image: [{ type: String, required: true }],
+    images: [{ type: String, required: true }],
     inStock: { type: Number, required: true, default: 0 },
     price: { type: Number, required: true, default: 0 },
     sizes: [
@@ -37,7 +37,9 @@ const productSchema = new Schema(
   }
 );
 
-// TODO: Crear indide de MONGO
+// TODO: Crear indice de MONGO
+//  Este indice es para que el campo "title" y "tags" puedan ser buscados
+productSchema.index({ title: "text", tags: "text" });
 
 const Product: Model<ISeedProduct> =
   mongoose.models.Product || model("Product", productSchema);

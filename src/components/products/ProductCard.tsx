@@ -10,7 +10,6 @@ interface props {
 
 export const ProductCard = ({ product }: props) => {
 
-
     const [isHovered, setIsHovered] = useState(false)
 
     const productImage = useMemo(() => {
