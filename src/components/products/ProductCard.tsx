@@ -11,12 +11,13 @@ interface props {
 export const ProductCard = ({ product }: props) => {
 
     const [isHovered, setIsHovered] = useState(false)
+    const [isImageLoaded, setIsImageLoaded] = useState(false)
 
     const productImage = useMemo(() => {
         if (isHovered) {
-            return `products/${product.images[0]}`
+            return `/products/${product.images[0]}`
         } else {
-            return `products/${product.images[1]}`
+            return `/products/${product.images[1]}`
         }
     }, [isHovered, product.images])
 
@@ -40,13 +41,13 @@ export const ProductCard = ({ product }: props) => {
                             height="300"
                             image={productImage}
                             alt={product.title}
-                            onLoad={() => console.log('loaded')}
+                            onLoad={() => setIsImageLoaded(true)}
                         />
                     </CardActionArea>
                 </NextLink>
             </Card>
 
-            <Box sx={{ mt: 1 }} className="fadeIn">
+            <Box sx={{ mt: 1, display: isImageLoaded ? 'block' : 'none' }} className="fadeIn">
 
                 <Typography variant="h6" component="h2" fontWeight={700}>
                     {product.title}

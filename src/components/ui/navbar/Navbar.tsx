@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppBar, Toolbar, Typography, Link, Box, Button, IconButton, Badge } from '@mui/material';
 import NextLink from 'next/link'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { useRouter } from 'next/router';
 
 export const Navbar = () => {
+
+    const router = useRouter()
+
     return (
         <AppBar>
             <Toolbar>
@@ -15,7 +19,7 @@ export const Navbar = () => {
                     passHref
                 >
                     <Link display="flex" alignItems={"center"}>
-                        <Typography variant="h6">
+                        <Typography variant="h6" >
                             Testlo
                         </Typography>
                         <Typography sx={{ ml: 0.5 }}>
@@ -31,20 +35,26 @@ export const Navbar = () => {
                 <Box sx={{ display: { xs: "none", sm: "block" } }}>
                     <NextLink href="/category/men" passHref legacyBehavior>
                         <Link>
-                            <Button>Hombre</Button>
+                            <Button
+                                color={router.asPath === '/category/men' ? 'secondary' : 'inherit'}
+                            >Hombre</Button>
                         </Link>
                     </NextLink>
 
 
                     <NextLink href="/category/women" passHref legacyBehavior>
                         <Link>
-                            <Button>Mujeres</Button>
+                            <Button
+                                color={router.asPath === '/category/women' ? 'secondary' : 'inherit'}
+                            >Mujeres</Button>
                         </Link>
                     </NextLink>
 
                     <NextLink href="/category/kid" passHref legacyBehavior>
                         <Link>
-                            <Button>Ninos</Button>
+                            <Button
+                                color={router.asPath === '/category/kid' ? 'secondary' : 'inherit'}
+                            >Ninos</Button>
                         </Link>
                     </NextLink>
                 </Box>
