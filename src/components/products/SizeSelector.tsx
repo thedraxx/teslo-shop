@@ -10,8 +10,6 @@ interface Props {
 
 const SizeSelector = ({ selectedSize, sizes }: Props) => {
 
-    console.log("selectedSize", selectedSize)
-    console.log("sizes", sizes)
 
     return (
         <Box>

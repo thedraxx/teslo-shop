@@ -33,7 +33,7 @@ export const ProductCard = ({ product }: props) => {
             onMouseLeave={() => setIsHovered(false)}
         >
             <Card>
-                <NextLink href={"/product/slug"} passHref legacyBehavior prefetch={false}>
+                <NextLink href={`/product/${product.slug}`} passHref legacyBehavior prefetch={false}>
                     <CardActionArea>
                         <CardMedia
                             component="img"

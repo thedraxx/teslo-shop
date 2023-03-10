@@ -5,10 +5,33 @@ import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 import { ProductSlideshow } from '../../components/products/ProductSlideshow';
 import ItemCounter from '@/components/ui/ItemCounter/ItemCounter';
 import SizeSelector from '@/components/products/SizeSelector';
+import { useRouter } from 'next/router';
+import { useProducts } from '../../hooks/useProducts';
+import { ISeedProduct } from '@/interfaces';
+import { GetServerSideProps } from 'next'
+import { dbProducts } from '@/database';
+import { redirect } from 'next/dist/server/api-utils';
+interface Props {
+    product: ISeedProduct
+}
 
-const product = initialData.products[0];
 
-const Slug = () => {
+// const product = initialData.products[0];
+
+const ProductPage = ({ product }: Props) => {
+
+    // const router = useRouter()
+    // console.log(router.query.slug)
+    // const { products: product, isLoading } = useProducts(`/products/${router.query.slug}`)
+    // console.log(product)
+
+    // if (isLoading) {
+    //     return <h1>cargando</h1>
+    // }
+    // if (!product) {
+    //     return <h1>no hay producto</h1>
+    // }
+
     return (
         <ShopLayout
             title={product.title}
@@ -67,4 +90,32 @@ const Slug = () => {
     )
 }
 
-export default Slug
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+    const product = await dbProducts.getProductBySlug(ctx.query.slug as string)
+
+    if (!product) {
+        return {
+            notFound: true,
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {
+            product: JSON.parse(JSON.stringify(product))
+        }
+    }
+}
+
+
+
+export default ProductPage
