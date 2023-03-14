@@ -51,3 +51,12 @@ export const getProductsByTerm = async (
 
   return products;
 };
+
+export const getAllProducts = async (): Promise<ISeedProduct[]> => {
+  await db.connect();
+
+  const products = await Product.find().select("-_id").lean();
+  await db.disconnect();
+
+  return products;
+};

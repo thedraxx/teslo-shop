@@ -1,6 +1,6 @@
 
 import { ShopLayout } from '@/components/layouts'
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { ProductList } from '@/components/products/ProductList';
 import { GetServerSideProps } from 'next'
 import { dbProducts } from '@/database';
@@ -8,10 +8,12 @@ import { ISeedProduct } from '@/interfaces';
 
 interface Props {
     products: ISeedProduct[];
+    foundProducts: boolean;
+    query: string;
 }
 
 
-const SearchPage = ({ products }: Props) => {
+const SearchPage = ({ products, foundProducts, query }: Props) => {
 
 
     return (
@@ -21,12 +23,19 @@ const SearchPage = ({ products }: Props) => {
             imageFullUrl="https://teslo-shop.vercel.app/images/teslo-shop-logo.png"
         >
             <Typography variant='h1' component="h1">Buscar Producto</Typography>
-            <Typography variant='h2' sx={{ mb: 1 }}>ABC --- 123</Typography>
+            <Typography variant='h2' sx={{ mb: 1 }}>{query}</Typography>
             {
-                <ProductList
-                    products={products}
-                />
+                foundProducts
+                    ? <Typography variant='h3' sx={{ mb: 1 }} textTransform={"capitalize"}>termino {query}</Typography>
+                    : (
+                        <Box display={"flex"}>
+                            <Typography variant='h2' sx={{ mb: 1 }}>No se encontraron productos</Typography>
+                            <Typography variant='h2' sx={{ ml: 1 }} color={"secondary"} textTransform={"capitalize"}>{query}</Typography>
+                        </Box>
+                    )
             }
+            <ProductList products={products} />
+
         </ShopLayout>
     )
 }
@@ -46,10 +55,18 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     }
 
     let products = await dbProducts.getProductsByTerm(query);
+    const foundProducts = products.length > 0;
+
     // TODO: Retornar otros productos si no hay resultados
+    if (!foundProducts) {
+        products = JSON.parse(JSON.stringify(await dbProducts.getAllProducts()));
+    }
+
     return {
         props: {
-            products
+            products,
+            foundProducts,
+            query
         }
     }
 }
