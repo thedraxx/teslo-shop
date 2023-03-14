@@ -23,14 +23,13 @@ const SearchPage = ({ products, foundProducts, query }: Props) => {
             imageFullUrl="https://teslo-shop.vercel.app/images/teslo-shop-logo.png"
         >
             <Typography variant='h1' component="h1">Buscar Producto</Typography>
-            <Typography variant='h2' sx={{ mb: 1 }}>{query}</Typography>
             {
                 foundProducts
-                    ? <Typography variant='h3' sx={{ mb: 1 }} textTransform={"capitalize"}>termino {query}</Typography>
+                    ? <Typography variant='h2' sx={{ mb: 1 }} textTransform={"capitalize"}>termino: {query}</Typography>
                     : (
                         <Box display={"flex"}>
                             <Typography variant='h2' sx={{ mb: 1 }}>No se encontraron productos</Typography>
-                            <Typography variant='h2' sx={{ ml: 1 }} color={"secondary"} textTransform={"capitalize"}>{query}</Typography>
+                            <Typography variant='h3' sx={{ ml: 1 }} color={"secondary"} textTransform={"capitalize"}>{query}</Typography>
                         </Box>
                     )
             }
