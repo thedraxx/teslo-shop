@@ -5,12 +5,13 @@ import React from 'react'
 interface Props {
     selectedSize?: IValidSizes;
     sizes: IValidSizes[]
+
+    // method: (size: IValidSizes) => void
+    onSelectedSize: (size: IValidSizes) => void
 }
 
 
-const SizeSelector = ({ selectedSize, sizes }: Props) => {
-
-
+const SizeSelector = ({ selectedSize, sizes, onSelectedSize }: Props) => {
     return (
         <Box>
             {
@@ -20,6 +21,7 @@ const SizeSelector = ({ selectedSize, sizes }: Props) => {
                         variant={selectedSize === size ? 'contained' : 'outlined'}
                         color={selectedSize === size ? 'secondary' : 'primary'}
                         size='small'
+                        onClick={() => onSelectedSize(size)}
                     >
                         {size}
                     </Button>

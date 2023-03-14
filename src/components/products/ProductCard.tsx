@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { Grid, Card, CardActionArea, CardMedia, Box, Typography } from '@mui/material';
+import { Grid, Card, CardActionArea, CardMedia, Box, Typography, Chip } from '@mui/material';
 import { ISeedProduct } from '@/interfaces'
 import NextLink from 'next/link'
 import Link from 'next/link';
@@ -33,8 +33,22 @@ export const ProductCard = ({ product }: props) => {
             onMouseLeave={() => setIsHovered(false)}
         >
             <Card>
-                <NextLink href={`/product/${product.slug}`} passHref legacyBehavior prefetch={false}>
+                <NextLink href={`/product/${product.slug}`} prefetch={false} passHref legacyBehavior>
+
+
+
+
                     <CardActionArea>
+
+                        {
+                            (product.inStock === 0) &&
+                            <Chip
+                                label="No hay disponible"
+                                color="primary"
+                                sx={{ position: "absolute", zIndex: 999, top: '10px', left: '10px' }}
+                            />
+                        }
+
                         <CardMedia
                             component="img"
                             className='fadeIn '

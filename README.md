@@ -25,5 +25,5 @@ MONGO_URL=mongodb://localhost:27017/teslodb
 Llamar a:
 
 ```
-
+    http://localhost:3000/api/seed
 ```

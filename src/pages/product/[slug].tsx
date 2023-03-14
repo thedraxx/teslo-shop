@@ -6,12 +6,13 @@ import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 import { dbProducts } from '@/database';
 import { getAllProductsSlugs } from '@/database/dbProducts';
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
-import { ISeedProduct } from '@/interfaces';
+import { ISeedProduct, iCartProduct } from '@/interfaces';
 import { ProductSlideshow } from '../../components/products/ProductSlideshow';
 import { ShopLayout } from '../../components/layouts/ShopLayout';
 import ItemCounter from '@/components/ui/ItemCounter/ItemCounter';
-import React from 'react'
+import React, { useState } from 'react'
 import SizeSelector from '@/components/products/SizeSelector';
+import { IValidSizes } from '../../interfaces/Products';
 
 interface Props {
     product: ISeedProduct
@@ -21,6 +22,25 @@ interface Props {
 // const product = initialData.products[0];
 
 const ProductPage = ({ product }: Props) => {
+    const [tempCartProduct, setTempCartProduct] = useState<iCartProduct>({
+        _id: product._id,
+        images: product.images[0],
+        inStock: product.inStock,
+        price: product.price,
+        size: "M",
+        slug: product.slug,
+        title: product.title,
+        type: product.type,
+        gender: product.gender,
+        quantity: 1,
+    })
+
+    const onSelectedSize = (size: IValidSizes) => {
+        setTempCartProduct({
+            ...tempCartProduct,
+            size
+        })
+    }
 
     // const router = useRouter()
     // console.log(router.query.slug)
@@ -62,17 +82,29 @@ const ProductPage = ({ product }: Props) => {
                             {/* Subcounter */}
                             <ItemCounter />
                             <SizeSelector
-                                selectedSize={product.sizes[0]}
+                                selectedSize={tempCartProduct.size}
                                 sizes={product.sizes}
+                                onSelectedSize={onSelectedSize}
                             />
                         </Box>
 
                         {/* Agregar al carrito */}
-                        <Button color='secondary' className='circular-btn'>
-                            Agregar al carrito
-                        </Button>
-
-                        {/* <Chip label="no hay disponibles" color='error' variant='outlined' /> */}
+                        {
+                            (product.inStock > 0)
+                                ?
+                                (
+                                    < Button color='secondary' className='circular-btn'>
+                                        {
+                                            tempCartProduct.size ?
+                                                'Agregar al carrito' :
+                                                'Selecciona un tamaño'
+                                        }
+                                    </Button>
+                                ) :
+                                (
+                                    <Chip label="no hay disponibles" color='error' variant='outlined' />
+                                )
+                        }
                         {/* Descripcion */}
                         <Box sx={{ mt: 3 }}>
                             <Typography variant="subtitle2" >
@@ -85,7 +117,7 @@ const ProductPage = ({ product }: Props) => {
                     </Box>
                 </Grid>
             </Grid>
-        </ShopLayout>
+        </ShopLayout >
     )
 }
 
