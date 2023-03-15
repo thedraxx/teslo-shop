@@ -25,14 +25,14 @@ const ProductPage = ({ product }: Props) => {
     const [tempCartProduct, setTempCartProduct] = useState<iCartProduct>({
         _id: product._id,
         images: product.images[0],
-        inStock: product.inStock,
+        inStock: 5,
         price: product.price,
         size: "M",
         slug: product.slug,
         title: product.title,
         type: product.type,
         gender: product.gender,
-        quantity: 1,
+        quantity: 2,
     })
 
     const onSelectedSize = (size: IValidSizes) => {
@@ -40,6 +40,27 @@ const ProductPage = ({ product }: Props) => {
             ...tempCartProduct,
             size
         })
+    }
+
+    const updateQuantity = (DecreaseOrIncrease: string) => {
+        if (DecreaseOrIncrease === "increase") {
+            if (product.inStock > tempCartProduct.quantity) {
+                setTempCartProduct({
+                    ...tempCartProduct,
+                    quantity: tempCartProduct.quantity + 1
+                })
+            }
+            return
+        } else {
+            setTempCartProduct({
+                ...tempCartProduct,
+                quantity: (tempCartProduct.quantity > 0 ? tempCartProduct.quantity - 1 : tempCartProduct.quantity = 0)
+            })
+        }
+    }
+
+    const onAddProduct = () => {
+        console.log(tempCartProduct)
     }
 
     // const router = useRouter()
@@ -80,7 +101,11 @@ const ProductPage = ({ product }: Props) => {
                                 Cantidad
                             </Typography>
                             {/* Subcounter */}
-                            <ItemCounter />
+                            { }
+                            <ItemCounter
+                                currentValue={tempCartProduct.quantity}
+                                updateQuantity={updateQuantity}
+                            />
                             <SizeSelector
                                 selectedSize={tempCartProduct.size}
                                 sizes={product.sizes}
@@ -93,7 +118,7 @@ const ProductPage = ({ product }: Props) => {
                             (product.inStock > 0)
                                 ?
                                 (
-                                    < Button color='secondary' className='circular-btn'>
+                                    < Button color='secondary' className='circular-btn' onClick={onAddProduct}>
                                         {
                                             tempCartProduct.size ?
                                                 'Agregar al carrito' :
