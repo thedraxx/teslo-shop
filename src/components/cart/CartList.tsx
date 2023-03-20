@@ -18,6 +18,7 @@ interface Props {
 export const CartList = ({ editable = false }: Props) => {
 
 
+
     return (
         <>
             {
@@ -40,12 +41,14 @@ export const CartList = ({ editable = false }: Props) => {
                         <Grid item xs={7}>
                             <Box display={"flex"} flexDirection={"column"}>
                                 <Typography variant="body1"> {product.title}</Typography>
-                                <Typography variant="body1"> Talla</Typography>
+                                <Typography variant="body1"> Talla M</Typography>
                                 {/* Condicional */}
                                 {
                                     editable
                                         ?
-                                        <ItemCounter />
+                                        <ItemCounter
+
+                                        />
                                         :
                                         <Typography variant="body1">3</Typography>
                                 }

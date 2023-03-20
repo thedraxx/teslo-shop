@@ -5,14 +5,17 @@
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 import { dbProducts } from '@/database';
 import { getAllProductsSlugs } from '@/database/dbProducts';
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import { ISeedProduct, iCartProduct } from '@/interfaces';
 import { ProductSlideshow } from '../../components/products/ProductSlideshow';
 import { ShopLayout } from '../../components/layouts/ShopLayout';
 import ItemCounter from '@/components/ui/ItemCounter/ItemCounter';
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import SizeSelector from '@/components/products/SizeSelector';
 import { IValidSizes } from '../../interfaces/Products';
+import { useRouter } from 'next/router';
+import { CartContext } from '@/context';
+
 
 interface Props {
     product: ISeedProduct
@@ -22,6 +25,10 @@ interface Props {
 // const product = initialData.products[0];
 
 const ProductPage = ({ product }: Props) => {
+    const router = useRouter()
+
+    const { cart, addProductToCart } = useContext(CartContext)
+
     const [tempCartProduct, setTempCartProduct] = useState<iCartProduct>({
         _id: product._id,
         images: product.images[0],
@@ -59,9 +66,18 @@ const ProductPage = ({ product }: Props) => {
         }
     }
 
+
     const onAddProduct = () => {
-        console.log(tempCartProduct)
+
+        if (!tempCartProduct.size) {
+            return
+        }
+
+        addProductToCart(tempCartProduct)
+        router.push('/cart')
     }
+
+    console.log(cart)
 
     // const router = useRouter()
     // console.log(router.query.slug)
