@@ -43,6 +43,27 @@ export const CartProvider = ({ children }: Props) => {
     }, [state.cart]);
 
 
+    useEffect(() => {
+
+        const numberOfItems = state.cart.reduce((prev, current) => prev + current.quantity, 0)
+
+        const Subtotal = state.cart.reduce((prev, current) => prev + current.price * current.quantity, 0)
+
+        const taxRate = Subtotal * Number(process.env.NEXT_PUBLIC_TAX_RATE || 0);
+
+        const orderSummary = {
+            numberOfItems,
+            Subtotal,
+            taxRate,
+            total: Subtotal * (taxRate + 1)
+        }
+
+
+        console.log("orderSummary", orderSummary)
+
+    }, [state.cart])
+
+
     const addProductToCart = (product: iCartProduct) => {
         dispatch({
             type: "[Cart] - Add product",
