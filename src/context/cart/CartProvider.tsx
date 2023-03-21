@@ -5,10 +5,18 @@ import { iCartProduct } from '@/interfaces';
 
 export interface CartState {
     cart: iCartProduct[];
+    numberOfItems: number;
+    Subtotal: number;
+    taxRate: number;
+    total: number;
 }
 
 const CART_INITIAL_STATE: CartState = {
-    cart: []
+    cart: [],
+    numberOfItems: 0,
+    Subtotal: 0,
+    taxRate: 0,
+    total: 0,
 };
 
 interface Props {
@@ -51,15 +59,19 @@ export const CartProvider = ({ children }: Props) => {
 
         const taxRate = Subtotal * Number(process.env.NEXT_PUBLIC_TAX_RATE || 0);
 
+        const total = Subtotal + taxRate;
+
         const orderSummary = {
             numberOfItems,
             Subtotal,
             taxRate,
-            total: Subtotal * (taxRate + 1)
+            total,
         }
 
-
-        console.log("orderSummary", orderSummary)
+        dispatch({
+            type: "[Cart] - Update order summary",
+            payload: orderSummary
+        })
 
     }, [state.cart])
 
