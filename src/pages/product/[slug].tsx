@@ -49,9 +49,9 @@ const ProductPage = ({ product }: Props) => {
         })
     }
 
-    const updateQuantity = (DecreaseOrIncrease: string) => {
+    const updateQuantity = (DecreaseOrIncrease: string, maxVal: number) => {
         if (DecreaseOrIncrease === "increase") {
-            if (product.inStock > tempCartProduct.quantity) {
+            if (maxVal > tempCartProduct.quantity) {
                 setTempCartProduct({
                     ...tempCartProduct,
                     quantity: tempCartProduct.quantity + 1
@@ -121,6 +121,7 @@ const ProductPage = ({ product }: Props) => {
                             <ItemCounter
                                 currentValue={tempCartProduct.quantity}
                                 updateQuantity={updateQuantity}
+                                maxVal={product.inStock}
                             />
                             <SizeSelector
                                 selectedSize={tempCartProduct.size}

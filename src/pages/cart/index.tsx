@@ -1,9 +1,9 @@
 import { CartList, OrdenSummary } from '@/components/cart';
 import { ShopLayout } from '@/components/layouts'
 import { Grid, Typography, Card, CardContent, Divider, Box, Button } from '@mui/material';
-import React from 'react'
 
 const CardPage = () => {
+
     return (
         <ShopLayout title='carrito - 3' pageDescription={"carrito de compra de la tienda"}>
             <Typography variant="h1" component="h1" fontWeight={700}>
