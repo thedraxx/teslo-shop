@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import { initialData } from '../../database/products';
 import { CardActionArea, Grid, Link, Typography, CardMedia, Box, Button } from '@mui/material';
 import NextLink from 'next/link';
-import ItemCounter from '../ui/ItemCounter/ItemCounter';
+import { ItemCounter } from '../ui/ItemCounter/ItemCounter';
 import { CartContext } from '@/context';
+import { iCartProduct } from '@/interfaces';
 
 interface Props {
     editable?: boolean;
@@ -12,27 +13,21 @@ interface Props {
 
 export const CartList = ({ editable = false }: Props) => {
 
-    const { cart } = useContext(CartContext)
+    const { cart, updateCartQuantity, removeProductFromCart } = useContext(CartContext);
 
-
-    const updateQuantity = (DecreaseOrIncrease: string, maxVal: number) => {
-        if (DecreaseOrIncrease === "increase") {
-
-            return
-        } else {
-
-        }
+    const onNewCartQuantityValue = (product: iCartProduct, newQuantityValue: number) => {
+        product.quantity = newQuantityValue;
+        updateCartQuantity(product);
     }
-
 
     return (
         <>
             {
                 cart.map((product) => (
-                    <Grid container spacing={2} key={product.slug} sx={{ mb: 1 }}>
-                        <Grid item xs={3}>
+                    <Grid container spacing={2} key={product.slug + product.size} sx={{ mb: 1 }}>
+                        <Grid item xs={3} >
                             {/* Llevar a la pagina del producto */}
-                            <NextLink href={'/product/slug'} passHref legacyBehavior>
+                            <NextLink href={`/product/${product.slug}`} passHref legacyBehavior>
                                 <Link>
                                     <CardActionArea>
                                         <CardMedia
@@ -54,8 +49,8 @@ export const CartList = ({ editable = false }: Props) => {
                                         ?
                                         <ItemCounter
                                             currentValue={product.quantity}
-                                            maxVal={product.inStock}
-                                            updateQuantity={updateQuantity}
+                                            maxValue={10}
+                                            updatedQuantity={(value: any) => onNewCartQuantityValue(product, value)}
                                         />
                                         :
                                         <Typography variant="body1">
@@ -71,7 +66,11 @@ export const CartList = ({ editable = false }: Props) => {
                             {
                                 editable
                                 && (
-                                    <Button variant="text" color="secondary">
+                                    <Button
+                                        variant="text"
+                                        color="secondary"
+                                        onClick={() => removeProductFromCart(product)}
+                                    >
                                         Eliminar
                                     </Button>
                                 )

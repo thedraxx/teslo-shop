@@ -50,10 +50,27 @@ export const CartProvider = ({ children }: Props) => {
         })
     }
 
+
+    const updateCartQuantity = (product: iCartProduct) => {
+        dispatch({ type: "[Cart] - Change cart quantity", payload: product })
+    }
+
+
+    const removeProductFromCart = (product: iCartProduct) => {
+
+        console.log("removeProductFromCart", product)
+
+        dispatch({ type: "[Cart] - Remove product in cart", payload: product })
+
+
+    }
+
     return (
         <CartContext.Provider value={{
             ...state,
-            addProductToCart
+            addProductToCart,
+            removeProductFromCart,
+            updateCartQuantity,
         }}>
             {children}
         </CartContext.Provider>

@@ -9,7 +9,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { ISeedProduct, iCartProduct } from '@/interfaces';
 import { ProductSlideshow } from '../../components/products/ProductSlideshow';
 import { ShopLayout } from '../../components/layouts/ShopLayout';
-import ItemCounter from '@/components/ui/ItemCounter/ItemCounter';
+import { ItemCounter } from '@/components/ui/ItemCounter/ItemCounter';
 import React, { useState, useContext } from 'react'
 import SizeSelector from '@/components/products/SizeSelector';
 import { IValidSizes } from '../../interfaces/Products';
@@ -49,21 +49,11 @@ const ProductPage = ({ product }: Props) => {
         })
     }
 
-    const updateQuantity = (DecreaseOrIncrease: string, maxVal: number) => {
-        if (DecreaseOrIncrease === "increase") {
-            if (maxVal > tempCartProduct.quantity) {
-                setTempCartProduct({
-                    ...tempCartProduct,
-                    quantity: tempCartProduct.quantity + 1
-                })
-            }
-            return
-        } else {
-            setTempCartProduct({
-                ...tempCartProduct,
-                quantity: (tempCartProduct.quantity > 0 ? tempCartProduct.quantity - 1 : tempCartProduct.quantity = 0)
-            })
-        }
+    const onUpdateQuantity = (quantity: number) => {
+        setTempCartProduct(currentProduct => ({
+            ...currentProduct,
+            quantity
+        }));
     }
 
 
@@ -72,12 +62,10 @@ const ProductPage = ({ product }: Props) => {
         if (!tempCartProduct.size) {
             return
         }
-
         addProductToCart(tempCartProduct)
         router.push('/cart')
     }
 
-    console.log(cart)
 
     // const router = useRouter()
     // console.log(router.query.slug)
@@ -120,8 +108,8 @@ const ProductPage = ({ product }: Props) => {
                             { }
                             <ItemCounter
                                 currentValue={tempCartProduct.quantity}
-                                updateQuantity={updateQuantity}
-                                maxVal={product.inStock}
+                                updatedQuantity={onUpdateQuantity}
+                                maxValue={product.inStock > 10 ? 10 : product.inStock}
                             />
                             <SizeSelector
                                 selectedSize={tempCartProduct.size}
