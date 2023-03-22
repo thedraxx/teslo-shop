@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { initialData } from '../../database/products';
 import { CardActionArea, Grid, Link, Typography, CardMedia, Box, Button } from '@mui/material';
 import NextLink from 'next/link';
 import { ItemCounter } from '../ui/ItemCounter/ItemCounter';
