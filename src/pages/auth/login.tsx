@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { AuthLayout } from '../../components/layouts/AuthLayout';
-import { Box, Grid, Typography, TextField, Button, Link } from '@mui/material';
+import { Box, Grid, Typography, TextField, Button, Link, Chip } from '@mui/material';
 import NextLink from 'next/link';
 import { useForm } from 'react-hook-form';
 import { validations } from '@/utils';
-import axios from 'axios';
 import testloAPI from '../../api/testloAPI';
+import { ErrorOutlined } from '@mui/icons-material';
+import { AuthContext } from '../../context/auth/AuthContext';
+import { useRouter } from 'next/router';
 
 
 type FormData = {
@@ -14,26 +16,28 @@ type FormData = {
 };
 
 const LoginPage = () => {
-
+    const router = useRouter();
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+    const [showError, setShowError] = useState(false)
+    const { loginUser } = useContext(AuthContext)
 
     const onLoginUser = async ({ email, password }: FormData) => {
-
-        try {
-
-            const { data } = await testloAPI.post('/user/login', {
-                email,
-                password
-            })
-            const { token, user } = data
-            console.log(token, user)
+        setShowError(false)
 
 
-        } catch (error) {
-            console.log(error)
+        const isValidLogin = await loginUser(email, password);
+
+        if (!isValidLogin) {
+            setShowError(true)
+            setTimeout(() => {
+                setShowError(false)
+            }, 3000);
+            return;
         }
 
+        return router.replace('/');
 
+        // TODO: navegar a la pantalla que el usuario estaba
     }
 
 
@@ -53,6 +57,18 @@ const LoginPage = () => {
                             <Typography variant="h4" component="h1" gutterBottom>
                                 iniciar Sesion
                             </Typography>
+                            {
+                                showError && (
+                                    <Chip
+                                        label="No reconocemos ese usuario / contrasena"
+                                        color="error"
+                                        variant="outlined"
+                                        icon={<ErrorOutlined />}
+                                        className='fade-in'
+                                    />
+                                )
+                            }
+
                         </Grid>
 
                         <Grid item xs={12}>
